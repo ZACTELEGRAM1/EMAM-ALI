@@ -504,19 +504,19 @@ function load_from_file(file, default_data)
     print ('Created file', file)
   else
     print ('Data loaded from file', file)
-    f:close() 
+    f:close()
   end
   return loadfile (file)()
 end
 
 -- See http://stackoverflow.com/a/14899740
 function unescape_html(str)
-  local map = { 
-    ["lt"]  = "<", 
+  local map = {
+    ["lt"]  = "<",
     ["gt"]  = ">",
     ["amp"] = "&",
     ["quot"] = '"',
-    ["apos"] = "'" 
+    ["apos"] = "'"
   }
   new = string.gsub(str, '(&(#?x?)([%d%a]+);)', function(orig, n, s)
     var = map[s] or n == "#" and string.char(s)
