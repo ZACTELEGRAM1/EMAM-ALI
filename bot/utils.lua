@@ -21,6 +21,9 @@ function get_receiver(msg)
   if msg.to.type == 'encr_chat' then
     return msg.to.print_name
   end
+  if msg.to.type == 'channel' then
+    return 'channel#id'..msg.to.id
+  end
 end
 
 function is_chat_msg( msg )
@@ -525,4 +528,22 @@ function unescape_html(str)
     return var
   end)
   return new
+end
+
+-- Workarrond to format the message as previously was received
+function backward_msg_format (msg)
+  for k,name in ipairs({'from', 'to'}) do
+    local longid = msg[name].id
+    msg[name].id = msg[name].peer_id
+    msg[name].peer_id = longid
+    msg[name].type = msg[name].peer_type
+  end
+  if msg.action and (msg.action.user or msg.action.link_issuer) then
+    local user = msg.action.user or msg.action.link_issuer
+    local longid = user.id
+    user.id = user.peer_id
+    user.peer_id = longid
+    user.type = user.peer_type
+  end
+  return msg
 end
